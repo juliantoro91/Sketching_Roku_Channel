@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="MainScene" extends="Scene" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+	<!-- Handlers -->
+    <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/ScreenStackLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/UserScreenLogic.brs" />
+    
+    <children>
+    	<!-- OverLogo id="overLogo" visible="false" />
+    	<StartLoadingIndicator id="startLoadingIndicator" /-->
+    </children>
+    
+</component>

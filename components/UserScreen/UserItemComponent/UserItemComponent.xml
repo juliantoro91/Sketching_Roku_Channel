@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="UserItemComponent" extends="Group" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+
+	<!-- Handler -->
+	<script type="text/brightscript" uri="pkg:/components/UserScreen/UserItemComponent/UserItemComponent.brs" />
+	<script type="text/brightscript" uri="pkg:/source/utils.brs" />
+	
+	<interface>
+		<field id="itemContent" type="node" onChange="OnItemContentChange"/>
+	</interface>
+	
+	<children>
+		<LayoutGroup
+			id="itemFrame"
+			layoutDirection="vert"
+			horizAlignment="center"
+			itemSpacings="[20]">
+			<Rectangle
+				id="userRectangle"
+				color="0xEDEDEDFF"
+				width="160"
+				height="160">
+				<Poster
+					id="userPoster"
+					width="160"
+					height="160"
+					loadWidth="160"
+					loadHeight="160"
+					loadDisplayMode="scaleToFit"/>
+			</Rectangle>
+			<Label
+				id="userLabel"
+				font="font:SmallSystemFont"
+				width="160"
+				color="0x000000ff"
+				horizAlign="Center"
+				wrap="false"/>
+		</LayoutGroup>
+	</children>
+</component>
