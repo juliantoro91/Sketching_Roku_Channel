@@ -7,6 +7,7 @@
 	<interface>
 		<field id="itemFocused" type="Integer" alias="userScreenGrid.itemFocused" onChange="OnFocusedItemChange" />
 		<field id="itemSelected" type="Integer" alias="userScreenGrid.itemSelected" />
+		<function name="OnScreenGridChange" />
 	</interface>
 	
 	<children>

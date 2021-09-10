@@ -9,6 +9,7 @@
 		<field id="itemSelected" type="Intarray" alias="homeScreenGrid.rowItemSelected" />
 		<field id="hideMasterFrame" type="Boolean" alias="homeAnimatedBackground.hideMasterFrame" onChange="OnHideMasterFrame" />
 		<field id="stopVideo" type="Boolean" alias="homeAnimatedBackground.stopVideo" />
+		<function name="OnScreenGridChange" />
 	</interface>
 	
 	<children>

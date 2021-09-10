@@ -116,7 +116,8 @@ sub OnFrameChange(masterFrame as Object, node as Object)
     if AutoLayout(masterFrame, isVertical) then ? "AutoLayout Success"
     CenteringLayout(masterFrame)
     
-    OnScreenGridChange()
+    'OnScreenGridChange()
+    node.callFunc("OnScreenGridChange")
     
     masterFrameRect = masterFrame.GetParent()
     
