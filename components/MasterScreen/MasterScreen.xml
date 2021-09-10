@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="MasterScreen" extends="Group" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+
+	<!-- Handler -->
+	<script type="text/brightscript" uri="pkg:/components/MasterScreen/MasterScreen.brs" />
+	<script type="text/brightscript" uri="pkg:/source/utils.brs" />
+	
+	<interface>
+		<field id="content" type="node" />
+		<field id="url" type="String" />
+		<field id="width" type="Integer" alias="masterFrameRect.width" />
+		<field id="height" type="Integer" alias="masterFrameRect.height" />
+		<field id="masterFrameDeviation" type="Intarray" />
+	</interface>
+	
+	<children>
+		<Group
+			id="backgroundFrame" />
+		<Rectangle
+			id="masterFrameRect"
+			color="0xc4c4c400">
+			<LayoutGroup
+				id="masterFrame"
+				layoutDirection="vert"
+				horizAlignment="center" />
+		</Rectangle>
+	</children>
+	
+</component>

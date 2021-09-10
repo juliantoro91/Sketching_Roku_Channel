@@ -2,34 +2,74 @@ sub Init()
 
     ? "UserScreen - Init()"
     
-    ' Element Variables
+    ' Node initial setup
+    m.top.id = "userScreen"
+    m.top.url = "https://testappjue.web.app/Sketching/SketchingUserContent.json"
+    
+    ' Element Variables definition
     m.masterFrame = m.top.FindNode("masterFrame")
     m.masterFrameRect = m.top.FindNode("masterFrameRect")
-    m.userScreenLogoFrame = m.top.FindNode("userScreenLogoFrame")
-    m.userScreenLogo = m.top.FindNode("userScreenLogo")
-    m.userScreenGrid = m.top.FindNode("userScreenGrid")
-    m.labelsFrameRect = m.top.FindNode("labelsFrameRect")
+    m.temporalFrame = m.top.FindNode("temporalFrame")
+    m.screenLogoFrame = m.top.FindNode("userScreenLogoFrame")
+    m.screenLogo = m.top.FindNode("userScreenLogo")
+    m.screenGrid = m.top.FindNode("userScreenGrid")
     
-    ' Add field to avoid width change
-    m.userScreenLogoFrame.addFields({"avoidDimensionalChange" : "true"})
+    ' Add fields
+    m.screenLogoFrame.addFields({"avoidDimensionalChange" : "true"}) ' to avoid width change
     
     ' Observers
-    m.top.observeField("visible","OnVisibleChange")
-    m.top.observeField("focusedChild","OnFocusedChildChange")
+    m.top.observeField("visibleState","OnVisibleChange")
+    m.top.observeField("content","OnScreenContentChange")
+    m.top.observeField("focusedChild","OnFocusChange")
     
     ' Variable to control initial setup of Grid
     m.gridInitialSetup = true
     
+    ' Screen Setup
+    widthFactor = 0.625
+    heightFactor = widthFactor
+    SetScreenDimensions (m.top, widthFactor, heightFactor)
+    m.top.masterFrameDeviation = [0, 0]
+    
+    ' Reparent Children
+    for each child in m.temporalFrame.GetChildren(m.temporalFrame.GetChildCount(),0)
+        child.reparent(m.masterFrame, false)
+    end for
+    
+end sub
+
+
+sub OnFocusChange()
+    if m.top.isInFocusChain() then m.screenGrid.SetFocus(true)
 end sub
 
 
 sub OnVisibleChange()
-    if m.top.visible then m.userScreenGrid.SetFocus(true)
+
+    ? "UserScreen - OnVisibleChange()"
+    
+    if m.top.visible
+        m.screenGrid.SetFocus(true)
+    end if
+    
 end sub
 
 
-sub OnFocusedChildChange()
-    if m.top.hasFocus() then m.userScreenGrid.SetFocus(true)
+sub OnScreenContentChange()
+    
+    ? "UserScreen - OnScreenContentChange()"
+    
+    m.screenGrid.content = m.top.content
+    
+    OnFrameChange(m.masterFrame, m.top)
+    
+end sub
+
+
+sub OnScreenGridChange()
+    
+    OnUserScreenGridChange()
+    
 end sub
 
 
@@ -38,45 +78,22 @@ sub OnUserScreenGridChange()
     ? "UserScreen - OnUserScreenGridChange()"
 
     ' UserScreenGrid - Layout Setup
-    userScreenGridWidth = m.top.width * 0.8
-    childrenQ = m.userScreenGrid.content.GetChildCount()
-    grossWidth = m.userScreenGrid.itemSize[0] * childrenQ
+    screenGridWidth = m.top.width * 0.8
+    childrenQ = m.screenGrid.content.GetChildCount()
+    grossWidth = m.screenGrid.itemSize[0] * childrenQ
     
-    itemSpacing = SetItemSpacings(userScreenGridWidth, grossWidth, childrenQ)
+    itemSpacing = SetItemSpacings(screenGridWidth, grossWidth, childrenQ)
     itemSpacings = []
     
     for i = 0 to (childrenQ-2)
         itemSpacings.Push(itemSpacing)
     end for
     
-    m.userScreenGrid.columnSpacings = itemSpacings
+    m.screenGrid.columnSpacings = itemSpacings
     
     if m.gridInitialSetup
-        m.userScreenGrid.numColumns=childrenQ
+        m.screenGrid.numColumns = childrenQ
         m.gridInitialSetup = false
-    end if
-    
-end sub
-
-
-sub OnFrameChange()
-
-    ? "UserScreen - OnFrameChange()"
-
-    if m.top.dimensionChange
-    
-        isVertical = false
-        if m.masterFrame.layoutDirection = "vert" then isVertical = true
-    
-        if AutoLayout(m.masterFrame, isVertical) then ? "AutoLayout Success"
-        CenteringLayout(m.masterFrame)
-        
-        OnUserScreenGridChange()
-        
-        OnMasterFrameRectChange()
-        
-        m.top.dimensionChange = false
-        
     end if
     
 end sub
@@ -85,42 +102,6 @@ end sub
 sub OnFocusedItemChange()
 
     ? "UserScreen - OnFocusedItemChange()"
-    
-    item = m.top.itemFocused
-    
-    if not m.top.dimensionChange and item > -1
-    
-        content = m.top.content.GetChild(item)
-        dimensions = content.title.split("x")
-        
-        width = dimensions[0].ToFloat()
-        height = dimensions[1].ToFloat()
-        
-        m.top.width = width
-        m.top.height = height
-        
-        ? "Change width: ";width
-        ? "Change height: ";height
-        
-        m.top.dimensionChange = true
-        
-    end if
-    
-end sub
-
-
-sub OnMasterFrameRectChange()
-    
-    ? "UserScreen - OnMasterFrameRectChange()"
-    dimensions = m.masterFrameRect.boundingRect()
-    
-    centerX = CreateObject("roFloat")
-    centerX.SetFloat((1280 - dimensions.width) / 2)
-    
-    centerY = CreateObject("roFloat")
-    centerY.SetFloat((720 - dimensions.height) / 2)
-    
-    m.masterFrameRect.translation = [centerX, centerY]
     
 end sub
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="AnimatedBackground" extends="MasterScreen" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+
+	<script type="text/brightscript" uri="pkg:/components/AnimatedBackground/AnimatedBackground.brs" />
+	
+	<interface>
+		<field id="hideMasterFrame" type="Boolean" />
+		<field id="stopVideo" type="Boolean" onChange="OnStopsVideo" />
+	</interface>
+	
+	<children>
+		<Rectangle
+			id="backgroundLayerOne"
+			color="0xffffffff"
+			opacity="1" >
+			<Group
+				id="backgroundOldVideo"
+			/>
+			<Rectangle
+				id="backgroundOldPosterRect"
+				color="0xffffffff" >
+				<Poster
+					id="backgroundOldPoster"
+					loadDisplayMode="scaleToFit"
+				/>
+			</Rectangle>
+		</Rectangle>
+		<Rectangle
+			id="backgroundLayerTwo"
+			opacity="1" >
+			<Group
+				id="backgroundNewVideo"
+			/>
+			<Rectangle
+				id="backgroundNewPosterRect"
+				color="0xffffffff" >
+				<Poster
+					id="backgroundNewPoster"
+					loadDisplayMode="scaleToFit"
+				/>
+			</Rectangle>
+		</Rectangle>
+		
+		<Rectangle
+			id="backgroundShader"
+			color="0xffffffff"
+			opacity="0"/>
+		<Animation
+	    	id="backgroundAnimation"
+	    	repeat="false"
+	    	duration="2" >
+	    	<FloatFieldInterpolator
+	    		id="backgroundAnimationInterpolator"
+	    		key="[0.0, 0.5, 1.0]"
+	    		keyValue="[0.0, 1.0, 0.0]"
+	    		fieldToInterp="backgroundShader.opacity"
+	    	/>
+	    </Animation>
+	    
+	    <Animation
+	    	id="backgroundPosterAnimation"
+	    	repeat="false"
+	    	duration="1" >
+	    	<FloatFieldInterpolator
+	    		id="backgroundPosterAnimationInterpolator"
+	    		key="[0.0, 1.0]"
+	    		keyValue="[1.0, 0.0]"
+	    		fieldToInterp="backgroundNewPosterRect.opacity"
+	    	/>
+	    </Animation>
+	    
+	</children>
+	
+</component>

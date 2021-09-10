@@ -17,21 +17,21 @@
 			itemSpacings="[20]">
 			<Rectangle
 				id="userRectangle"
-				color="0xEDEDEDFF"
-				width="160"
-				height="160">
+				color="0xFFFFFFFF"
+				width="140"
+				height="140">
 				<Poster
 					id="userPoster"
-					width="160"
-					height="160"
-					loadWidth="160"
-					loadHeight="160"
+					width="140"
+					height="140"
+					loadWidth="140"
+					loadHeight="140"
 					loadDisplayMode="scaleToFit"/>
 			</Rectangle>
 			<Label
 				id="userLabel"
 				font="font:SmallSystemFont"
-				width="160"
+				width="140"
 				color="0x000000ff"
 				horizAlign="Center"
 				wrap="false"/>
