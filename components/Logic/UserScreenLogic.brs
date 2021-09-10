@@ -11,6 +11,9 @@ sub ShowUserScreen()
     
     ShowScreen(m.userScreen)
     
+    ' Observers
+    m.userScreen.observeField("itemSelected","OnSelectedItem")
+    
 end sub
 
 
@@ -18,6 +21,15 @@ sub OnUserContentTaskChange()
 
     ? "UserScreenLogic - OnUserContentTaskChange()"
 
-    m.userScreen.content=m.userContentTask.content
+    m.userScreen.content = m.userContentTask.content.GetChild(0)
+    
+end sub
+
+
+sub OnSelectedItem()
+    
+    ? "UserScreenLogic - OnSelectedItem"
+    
+    ShowHomeScreen()
     
 end sub

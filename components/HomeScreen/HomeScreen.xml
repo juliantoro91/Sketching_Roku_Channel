@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="HomeScreen" extends="MasterScreen" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+
+	<!-- Handler -->
+	<script type="text/brightscript" uri="pkg:/components/HomeScreen/HomeScreen.brs" />
+	
+	<interface>
+		<field id="itemFocused" type="Intarray" alias="homeScreenGrid.rowItemFocused" onChange="OnFocusedItemChange" />
+		<field id="itemSelected" type="Intarray" alias="homeScreenGrid.rowItemSelected" />
+		<field id="hideMasterFrame" type="Boolean" alias="homeAnimatedBackground.hideMasterFrame" onChange="OnHideMasterFrame" />
+		<field id="stopVideo" type="Boolean" alias="homeAnimatedBackground.stopVideo" />
+	</interface>
+	
+	<children>
+		<Group
+			id="homeBackground" >
+			<!-- Animated Background -->
+			<AnimatedBackground
+				id="homeAnimatedBackground"
+			/>
+			<Poster
+				id="homeFadeOverlayBackground"
+				loadDisplayMode="scaleToFill"
+				/>
+			<Rectangle
+				id="homeOverlayBackground"
+				color="0xffffffff"
+				opacity="0.2"
+			/>
+		</Group>
+		<Group
+			id="temporalFrame" >
+			<Rectangle
+				id="homeDescriptionFrameRect"
+				color="0xeaeaea00"
+				width="550"
+				height="220" >
+				<LayoutGroup
+					id="homeDescriptionFrame"
+					layoutDirection="vert"
+					horizAlignment="left" >
+					<Poster
+						id="homeDescriptionLogo"
+						width="225"
+						height="60"
+						loadWidth="225"
+						loadHeight="60"
+						loadDisplayMode="scaleToFit"
+					/>
+					<Label	
+						id="homeDescriptionLabel"
+						width="400"
+						wrap="true"
+						font="font:SmallestSystemFont"
+						color="0x000000ff"
+						horizAlign="left"
+						numLines = "3"
+					/>
+					<Rectangle
+						id="homeDescriptionButtonsFrameRect"
+						color="0xeaeaea00"
+						width="360"
+						height="50" >
+						<LayoutGroup
+							id="homeDescriptionButtonsFrame"
+							layoutDirection="horiz"
+							horizAlignment="left" >
+							<Button
+								id="homeDescriptionButtonPlay"
+								text="Play"
+								textColor="0x000000ff"
+								textFont="font:SmallestSystemFont"
+								iconUri=" "
+								focusedIconUri=" "
+								height="40"
+								minWidth="110"
+								showFocusFootprint="true"
+							/>
+							<Button
+								id="homeDescriptionButtonInfo"
+								text="More Info"
+								textColor="0x000000ff"
+								textFont="font:SmallestSystemFont"
+								iconUri=" "
+								focusedIconUri=" "
+								height="40"
+								minWidth="140"
+								showFocusFootprint="true"
+							/>
+						</LayoutGroup>
+					</Rectangle>
+				</LayoutGroup>
+			</Rectangle>
+			<Rectangle
+				id="rowlistVariableSpacing"
+				color="0xfffc0000"
+				height="10"
+			/>
+			<Animation
+				id="rowlistVariableSpacingAnimation"
+				repeat="false"
+	    		duration="0.5" >
+	    		<FloatFieldInterpolator
+		    		id="rowlistVariableSpacingAnimationInterpolator"
+		    		key="[0.0, 1.0]"
+		    		keyValue="[0.0, 1.0]"
+		    		fieldToInterp="rowlistVariableSpacing.height"
+		    	/>
+			</Animation>
+			<RowList
+				id="homeScreenGrid"
+				itemComponentName="homeScreenGridItem"
+				itemSize="[1070,300]"
+				rowSpacings="[10]"
+				rowItemSize="[[200, 270]]"
+				rowItemSpacing="[[10,0]]"
+				showRowLabel="[true]"
+				rowLabelColor="0x000000ff"
+				rowLabelOffset="[[5,20]]"
+				showRowCounter="[true]"
+				rowFocusAnimationStyle="fixedFocusWrap"
+				fadeFocusFeedbackWhenAutoScrolling="true"
+				numRows="1"
+			/>
+		</Group>
+		<Poster
+			id="homeFadeBottom"
+			width="0"
+			height="100"
+			loadWidth="0"
+			loadHeight="50"
+			loadDisplayMode="scaleToFill"
+		/>
+	</children>
+	
+</component>

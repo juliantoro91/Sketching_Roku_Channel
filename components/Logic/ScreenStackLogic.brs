@@ -1,48 +1,61 @@
 sub InitScreenStack ()
 
     ? "ScreenStackLogic - InitScreenStack()"
-
+    
+    ' Array to store screens
     m.screenStack = []
     
 end sub
+
 
 sub ShowScreen(screen as Object)
 
     ? "ScreenStackLogic - ShowScreen()"
     
-    if screen <> invalid AND screen <> m.screenStack.Peek()
+    previousScreen = m.screenStack.Peek()
     
-        previousScreen = m.screenStack.Peek()
-        if previousScreen <> invalid then previousScreen.visible = false
+    if screen <> invalid 'AND screen <> previousScreen
+    
+        if previousScreen <> invalid
         
+            m.top.layerOne.RemoveChild(m.top.layerOne.GetChild(0))            
+            previousScreen.reparent(m.top.layerOne, false)
+            
+        end if
+            
         m.screenStack.Push(screen)
-        m.top.AppendChild(screen)
+        m.top.layerTwo.AppendChild(screen)
         
         screen.SetFocus(true)
-        screen.visible = true
         
     end if
     
 end sub
 
+
 sub CloseScreen (screen as Object)
 
     ? "ScreenStackLogic - CloseScreen()"
     
-    if m.screenStack.Count() > 0
-        if screen = invalid OR screen = m.screenStack.Pop()
+    if m.screenStack.Count() > 1
+        if screen = invalid OR screen.isSameNode(GetCurrentScreen())
+        
+            if screen = invalid then screen = m.screenStack.Pop()
+            previousScreen = GetCurrentScreen()
             
-            screen.visible=false
-            m.top.removeChild(screen)
+            m.top.layerOne.RemoveChild(m.top.layerOne.GetChild(0))            
+            screen.reparent(m.top.layerOne, false)
+            if screen.stopVideo <> invalid then screen.stopVideo = true
             
-            previousScreen = m.screenStack.Peek()
-            previousScreen.visible=true
+            m.top.layerTwo.AppendChild(previousScreen)
+        
             previousScreen.SetFocus(true)
             
         end if
     end if
     
 end sub
+
 
 sub GetCurrentScreen () as Object
 

@@ -1,5 +1,7 @@
 sub init()
 
+    ? "MainLoaderTask - Init()"
+
     m.top.functionName = "GetContent"
     
 end sub
@@ -21,48 +23,57 @@ sub GetContent()
     
     content = CreateObject("RoSGNode","ContentNode")
     
-    if json <> invalid
-        for each category in json
-            
-            value = json.Lookup(category)
-            
-            if Type(value) = "roArray"
-
-                'row = CreateObject("RoSGNode","ContentNode")
-                'row.title = category
-                'row.children = []
-                
-                for each item in value
-                    
-                    itemData = GetData(item)
-                    content.AppendChild(itemData)
-                    
-                end for
-            end if
-            
-            'content.AppendChild(row)
-            
-        end for
-    end if
+    if json <> invalid then content = ParseContent(json)
     
     m.top.content = content
     
 end sub
 
 
-function GetData(item as Object) as Object
+function ParseContent(item as Object) as Object
+
+    ? "MainLoaderTask - ParseContent()"
+
+    data = CreateObject("RoSGNode","ContentNode")
     
-    itemData = CreateObject("RoSGNode","ContentNode")
+    setFields = {}
     addFields = {}
     
     for each element in item
+    
+        if type(item.Lookup(element)) = "roArray"
+            
+            components = item.Lookup(element)
+            row = CreateObject("RoSGNode", "ContentNode")
+            row.Title = element
+            
+            hasChilds = false
+            if type(components[0]) = "roAssociativeArray" then hasChilds = true
+            
+            if hasChilds
+            
+                for each component in components 
+                    field = ParseContent(component)
+                    row.AppendChild(field)
+                end for
+                
+                data.AppendChild(row)
+                
+            end if
+            
+        end if
         
-        addFields[element] = item[element]
+        if data.HasField(element)
+            setFields[element] = item[element]
+        else
+            addFields[element] = item[element]
+        end if
         
     end for
     
-    itemData.AddFields(addFields)
+    data.SetFields(setFields)
+    data.AddFields(addFields)
     
-    return itemData
+    return data
     
 end function
