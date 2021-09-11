@@ -1,4 +1,6 @@
 .vscode
 out
 *.zip
+Diagrams
+*.dia
 *.code-workspace
