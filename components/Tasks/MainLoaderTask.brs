@@ -2,12 +2,29 @@ sub init()
 
     ? "MainLoaderTask - Init()"
 
-    m.top.functionName = "GetContent"
+    m.top.functionName = "ProcessContent"
     
 end sub
 
 
-sub GetContent()
+sub ProcessContent()
+
+    ? "MainLoaderTask - ProcessContent()"
+
+    json = GetContent()
+
+    rootChildren = []
+    
+    content = CreateObject("RoSGNode","ContentNode")
+    
+    if json <> invalid then content = ParseContent(json)
+    
+    m.top.content = content.GetChild(0) ' Revisar type Mismatch en este punto roAA a ContentNode
+
+end sub
+
+
+function GetContent() as Object
 
     ? "MainLoaderTask - GetContent()"
     
@@ -17,17 +34,11 @@ sub GetContent()
     
     url = url.GetToString()
     
-    rootChildren = []
-    
     json = ParseJson(url)
+
+    return json
     
-    content = CreateObject("RoSGNode","ContentNode")
-    
-    if json <> invalid then content = ParseContent(json)
-    
-    m.top.content = content
-    
-end sub
+end function
 
 
 function ParseContent(item as Object) as Object
@@ -47,10 +58,10 @@ function ParseContent(item as Object) as Object
             row = CreateObject("RoSGNode", "ContentNode")
             row.Title = element
             
-            hasChilds = false
-            if type(components[0]) = "roAssociativeArray" then hasChilds = true
+            hasChildren = false
+            if type(components[0]) = "roAssociativeArray" then hasChildren = true
             
-            if hasChilds
+            if hasChildren
             
                 for each component in components 
                     field = ParseContent(component)

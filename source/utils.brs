@@ -13,6 +13,21 @@ sub CenteringLayout(node as Object)
 end sub
 
 
+sub SetScreenDimensions (node as Object, widthFactor as Float, heightFactor as Float)
+    
+    ? "MasterScreeen - SetScreenDimensions()"
+    
+    screenDimensions = CreateObject("roDeviceInfo").GetDisplaySize()
+    screenWidth = screenDimensions.w
+    screenHeight = screenDimensions.h
+    
+    
+    node.width = screenWidth * widthFactor
+    node.height = screenHeight * heightFactor
+    
+end sub
+
+
 '***** GENERAL USE FUNCTIONS *****
 
 function Pi() as Float

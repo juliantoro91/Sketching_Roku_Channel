@@ -2,7 +2,7 @@
 <component name="UserScreen" extends="MasterScreen" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
 
 	<!-- Handler -->
-	<script type="text/brightscript" uri="pkg:/components/UserScreen/UserScreen.brs" />
+	<script type="text/brightscript" uri="pkg:/components/UserSceneScreens/UserScreen/UserScreen.brs" />
 	
 	<interface>
 		<field id="itemFocused" type="Integer" alias="userScreenGrid.itemFocused" onChange="OnFocusedItemChange" />

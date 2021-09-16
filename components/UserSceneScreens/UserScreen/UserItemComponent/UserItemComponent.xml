@@ -2,7 +2,7 @@
 <component name="UserItemComponent" extends="Group" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
 
 	<!-- Handler -->
-	<script type="text/brightscript" uri="pkg:/components/UserScreen/UserItemComponent/UserItemComponent.brs" />
+	<script type="text/brightscript" uri="pkg:/components/UserSceneScreens/UserScreen/UserItemComponent/UserItemComponent.brs" />
 	<script type="text/brightscript" uri="pkg:/source/utils.brs" />
 	
 	<interface>

@@ -1,6 +1,6 @@
 sub InitScreenStack ()
 
-    ? "ScreenStackLogic - InitScreenStack()"
+    ? "ScreenStackLogic - InitScreenStack"
     
     ' Array to store screens
     m.screenStack = []
@@ -8,9 +8,9 @@ sub InitScreenStack ()
 end sub
 
 
-sub ShowScreen(screen as Object)
+sub AddScreen(screen as Object)
 
-    ? "ScreenStackLogic - ShowScreen()"
+    ? "ScreenStackLogic - AddScreen"
     
     previousScreen = m.screenStack.Peek()
     
@@ -33,9 +33,9 @@ sub ShowScreen(screen as Object)
 end sub
 
 
-sub CloseScreen (screen as Object)
+sub RemoveScreen (screen as Object)
 
-    ? "ScreenStackLogic - CloseScreen()"
+    ? "ScreenStackLogic - CloseScreen"
     
     if m.screenStack.Count() > 1
         if screen = invalid OR screen.isSameNode(GetCurrentScreen())
@@ -59,7 +59,7 @@ end sub
 
 sub GetCurrentScreen () as Object
 
-    ? "ScreenStackLogic - GetCurrentScreen()"
+    ? "ScreenStackLogic - GetCurrentScreen"
     
     return m.screenStack.Peek()
     

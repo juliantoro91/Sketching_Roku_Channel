@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="MasterScreen" extends="Group" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+<component name="MasterScreen" extends="MasterItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
 
 	<!-- Handler -->
 	<script type="text/brightscript" uri="pkg:/components/MasterScreen/MasterScreen.brs" />
-	<script type="text/brightscript" uri="pkg:/source/utils.brs" />
 	
 	<interface>
-		<field id="content" type="node" />
-		<field id="url" type="String" />
-		<field id="width" type="Integer" alias="masterFrameRect.width" />
-		<field id="height" type="Integer" alias="masterFrameRect.height" />
-		<field id="masterFrameDeviation" type="Intarray" />
+		<field id="url" type="string" />
+		<field id="finalOpacity" type="Integer" />
+		<field id="animationState" type="String" alwaysNotify="true" onChange="OnAnimationStateChange" />
 	</interface>
 	
 	<children>
-		<Group
-			id="backgroundFrame" />
-		<Rectangle
-			id="masterFrameRect"
-			color="0xc4c4c400">
-			<LayoutGroup
-				id="masterFrame"
-				layoutDirection="vert"
-				horizAlignment="center" />
-		</Rectangle>
+		
+		<ParallelAnimation
+			id="masterAnimation" >
+
+			<Animation
+				id="backgroundAnimation"
+				duration="2"
+				repeat="false" >
+				<FloatFieldInterpolator
+					id="backgroundAnimationInterpolator"
+					key="[0, 1]"
+					keyValue="[0.0, 1.0]"
+					fieldToInterp="backgroundFrame.opacity" />
+			</Animation>
+
+			<Animation
+				id="masterFrameAnimation"
+				duration="2"
+				repeat="false" >
+				<FloatFieldInterpolator
+					id="masterFrameAnimationInterpolator"
+					key="[0, 1]"
+					keyValue="[0.0, 1.0]"
+					fieldToInterp="masterFrame.opacity" />
+			</Animation>
+
+		</ParallelAnimation>
+
+		<!-- LoadingIndicator
+			id="masterLoadingIndicator" /-->
+
 	</children>
 	
 </component>

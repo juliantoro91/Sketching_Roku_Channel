@@ -4,3 +4,7 @@ out
 Diagrams
 *.dia
 *.code-workspace
+website
+*.html
+*.js
+*.mp4

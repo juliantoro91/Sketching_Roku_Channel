@@ -4,7 +4,7 @@
 	<script type="text/brightscript" uri="pkg:/components/Tasks/MainLoaderTask.brs" />
 	
 	<interface>
-		<field id="content" type="node" />
+		<field id="content" type="Node" />
 		<field id="url" type="String" />
 	</interface>
 	
