@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<component name="MainScene" extends="MasterScene">
-	<!-- Handlers -->
-    <script type="text/brightscript" uri="pkg:/components/Scenes/MainScene.brs" />
-    
-</component>

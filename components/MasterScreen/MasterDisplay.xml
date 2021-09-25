@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="MasterDisplay" extends="Group" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+
+	<script type="text/brightscript" uri="pkg:/source/utils.brs" />
+	
+	<interface>
+		<field id="width" type="Integer" alias="masterFrame.width" />
+		<field id="height" type="Integer" alias="masterFrame.height" />
+	</interface>
+	
+</component>

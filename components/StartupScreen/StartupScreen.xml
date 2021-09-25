@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="StarupScreen" extends="MasterScreen" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+
+    <script type="text/brightscript" uri="pkg:/components/StartupScreen/StartupScreen.brs" />
+
+    <interface>
+        <field id="videoState" type="string" alias="startupVideo.state" />
+        <field id="video" type="node" />
+    </interface>
+
+    <children>
+        
+        <Rectangle id="temporalFrame">
+
+            <Poster
+                id="startupLogo" />
+            
+            <Video
+                id="startupVideo" />
+
+        </Rectangle>
+
+    </children>
+    
+</component>

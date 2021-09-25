@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="MasterScene" extends="Scene">
+<component name="MasterScene" extends="MasterDisplay">
 	<!-- Handlers -->
     <script type="text/brightscript" uri="pkg:/components/Scenes/MasterScene.brs" />
-    <script type="text/brightscript" uri="pkg:/components/Logic/MasterScreenLogic.brs" />
-    <script type="text/brightscript" uri="pkg:/components/Logic/ScreenStackLogic.brs" />
-    <!--script type="text/brightscript" uri="pkg:/components/Logic/StartupScreenLogic.brs" /-->
-    <script type="text/brightscript" uri="pkg:/components/Logic/UserScreenLogic.brs" />
-    <script type="text/brightscript" uri="pkg:/components/Logic/HomeScreenLogic.brs" />
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
     
     <interface>
-    	<field id="toActiveScene" type="string" />
+    	<field id="screenStack" type="array" />
         <field id="layerOne" type="node" />
         <field id="layerTwo" type="node" />
-        <field id="userID" type="integer" />
+        <field id="startTransition" type="integer" />
     </interface>
     
     <children>
     
     	<Group
-    		id="screensGroup">
+    		id="sceneLayers">
 	    	<Rectangle
 	    		id="sceneLayerOne"
 	    		visible="true" />
@@ -28,7 +22,25 @@
 	    		id="sceneLayerTwo"
 	    		visible="true" />
 	    </Group>
-    	
+
+        <Rectangle
+            id="transitionShader"
+            color="0xFFFFFFFF"
+            opacity="0"
+            visible="true" />
+
+        <Animation
+	    	id="transitionAnimation"
+	    	repeat="false"
+	    	duration="4.8" >
+	    	<FloatFieldInterpolator
+	    		id="transitionAnimationInterpolator"
+	    		key="[0.0, 0.5, 1.0]"
+	    		keyValue="[0.0, 1.0, 0.0]"
+	    		fieldToInterp="transitionShader.opacity"
+	    	/>
+	    </Animation>
+
     </children>
     
 </component>

@@ -2,33 +2,56 @@ sub NewScreen(params as Object)
 
     ? "MasterScreenLogic - NewScreen"
 
-    if type(params) = "roAssociativeArray"
+    if not type(params) = "roAssociativeArray" then return
         
-        screen = CreateObject("roSGNode", params.name)
+    screen = CreateObject("roSGNode", params.name)
 
-        screen.url = params.url
+    screen.url = params.url
 
-        contentTask = CreateObject("roSGNode", "MainLoaderTask")
-        contentTask.url = screen.url
-        contentTask.control = "run"
-        m.screen = screen
-        contentTask.ObserveField("content", "OnMasterScreenContentChange")
+    contentTask = CreateObject("roSGNode", "MainLoaderTask")
+    contentTask.url = screen.url
+    contentTask.control = "run"
+    m.screen = screen
+    contentTask.ObserveField("content", "OnMasterScreenContentChange")
 
-        HDScreenWidth = 1280
-        HDScreenHeight = 720
-        widthFactor = calculateFactor(params.widthFactor, params.widthDefault, HDScreenWidth)
-        heightFactor = calculateFactor(params.heightFactor, params.heightDefault, HDScreenHeight)
+    HDScreenWidth = 1280
+    HDScreenHeight = 720
+    widthFactor = calculateFactor(params.widthFactor, params.widthDefault, HDScreenWidth)
+    heightFactor = calculateFactor(params.heightFactor, params.heightDefault, HDScreenHeight)
 
-        screen.widthFactor = widthFactor
-        screen.heightFactor = heightFactor
-        screen.masterFrameDeviation = [params.Xdeviation, params.Ydeviation]
-        screen.visible = false
-        
-        screen.runSetup = true
+    screen.widthFactor = widthFactor
+    screen.heightFactor = heightFactor
+    screen.masterFrameDeviation = [params.Xdeviation, params.Ydeviation]
+    screen.visible = false
+    
+    screen.runSetup = true
 
-        AddScreen(screen)
+    screen.ObserveField("loadCompleted", "OnLoadedScreen")
 
+end sub
+
+
+sub OnMasterScreenContentChange(event as Object)
+
+    ? "MasterScreenLogic - OnMasterScreenContentChange"
+
+    content = event.GetData()
+
+    if content <> invalid
+
+       m.screen.content = content
+       m.screen = invalid
+       
     end if
+
+end sub
+
+
+sub OnLoadedScreen()
+
+    ? "MasterScreenLogic - OnLoadedScreen"
+
+    AddScreen(screen)
 
 end sub
 
@@ -53,19 +76,3 @@ function calculateFactor(factor as Object, default as Object, screen as Object) 
     return result
 
 end function
-
-
-sub OnMasterScreenContentChange(event as Object)
-
-    ? "MasterScreenLogic - OnMasterScreenContentChange"
-
-    content = event.GetData()
-
-    if content <> invalid
-
-       m.screen.content = content
-       m.screen = invalid
-       
-    end if
-
-end sub

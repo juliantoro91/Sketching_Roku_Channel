@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="MainScene" extends="Scene">
+	<!-- Handlers -->
+    <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/ScenesLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/MasterScreenLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/ScreenStackLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/StartupScreenLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/UserScreenLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/components/Logic/HomeScreenLogic.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    
+    <interface>
+    	<field id="screenVariablesRoute" type="string" value="pkg:/source/ScreenVariables.json" />
+        <field id="userID" type="integer" />
+        <field id="sceneID" type="Integer" value="0" />
+        <field id="changeScene" type="boolean" />
+        <field id="closeApp" type="boolean" />
+    </interface>
+    
+</component>
