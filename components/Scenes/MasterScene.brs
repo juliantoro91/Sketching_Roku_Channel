@@ -5,10 +5,17 @@ sub Init()
     m.screenStack = []
     m.top.screenStack = m.screenStack
 
+    SetScreenDimensions(m.top, 1, 1)
+
     m.layerOne = m.top.findNode("sceneLayerOne")
     m.layerTwo = m.top.findNode("sceneLayerTwo")
     m.top.layerOne = m.layerOne
     m.top.layerTwo = m.layerTwo
+
+    m.layerOne.width = m.top.width
+    m.layerOne.height = m.top.height
+    m.layerTwo.width = m.top.width
+    m.layerTwo.height = m.top.height
 
     m.animation = m.top.findNode("transitionAnimation")
     m.interpolator = m.top.findNode("transitionAnimationInterpolator")
@@ -58,9 +65,9 @@ end sub
 
 sub AnimationChange()
 
-    ? "MasterScene - AnimationChange"
-
     if m.interpolator.fraction > 0.5 and m.top.startTransition
+
+        ? "MasterScene - AnimationChange"
 
         m.top.startTransition = false
 

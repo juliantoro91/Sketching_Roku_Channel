@@ -13,6 +13,7 @@
     
     <interface>
     	<field id="screenVariablesRoute" type="string" value="pkg:/source/ScreenVariables.json" />
+        <field id="screenVariables" type="assocarray" />
         <field id="userID" type="integer" />
         <field id="sceneID" type="Integer" value="0" />
         <field id="changeScene" type="boolean" />

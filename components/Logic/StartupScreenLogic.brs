@@ -25,7 +25,7 @@ sub OnVideoStateChange(event as Object)
 
         if data = "finished" or "error"
 
-            node.control = "play"
+            node.video.control = "play"
 
         end if
 

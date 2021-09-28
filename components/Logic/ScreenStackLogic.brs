@@ -1,32 +1,10 @@
-sub InitScreenStack ()
-
-    ? "ScreenStackLogic - InitScreenStack"
-    
-    ' Array to store screens
-    m.screenStack = []
-    
-end sub
-
-
 sub AddScreen(screen as Object)
 
     ? "ScreenStackLogic - AddScreen"
     
-    previousScreen = m.screenStack.Peek()
-    
-    if screen <> invalid 'AND screen <> previousScreen
-    
-        if previousScreen <> invalid
-        
-            m.top.layerOne.RemoveChild(m.top.layerOne.GetChild(0))            
-            previousScreen.reparent(m.top.layerOne, false)
-            
-        end if
-            
-        m.screenStack.Push(screen)
-        m.top.layerTwo.AppendChild(screen)
-        
-        screen.SetFocus(true)
+    if screen <> invalid
+
+        ChangeScreen(screen, "Add")
         
     end if
     
@@ -37,30 +15,68 @@ sub RemoveScreen (screen as Object)
 
     ? "ScreenStackLogic - CloseScreen"
     
-    if m.screenStack.Count() > 1
-        if screen = invalid OR screen.isSameNode(GetCurrentScreen())
+    if screen = invalid OR screen.isSameNode(GetCurrentScreen())
         
-            if screen = invalid then screen = m.screenStack.Pop()
-            previousScreen = GetCurrentScreen()
+        ChangeScreen(screen, "Remove")
             
-            m.top.layerOne.RemoveChild(m.top.layerOne.GetChild(0))            
-            screen.reparent(m.top.layerOne, false)
-            if screen.stopVideo <> invalid then screen.stopVideo = true
-            
-            m.top.layerTwo.AppendChild(previousScreen)
-        
-            previousScreen.SetFocus(true)
-            
-        end if
     end if
     
 end sub
 
 
-sub GetCurrentScreen () as Object
+sub ChangeScreen(screen as Object, action as String)
+
+    ? "ScreenStackLogic - ChangeScreen"
+
+    scene = ReturnScene()
+
+    if action = "Add"
+
+        prevScreen = GetCurrentScreen()
+
+    else if action = "Remove"
+
+        prevScreen = scene.screenStack.Pop()
+
+    end if
+
+    if prevScreen <> invalid
+
+        actualChild.layerOne.GetChild(0)
+        scene.layerOne.RemoveChild(actualChild)
+        previousScreen.reparent(scene.layerOne, false)
+        scene.layerOne.visible = true
+
+    end if
+
+    if action = "Add"
+
+        scene.screenStack.Push(screen)
+
+    else if action = "Remove"
+
+        screen = GetCurrentScreen()
+
+    end if
+
+    if screen <> invalid
+
+        scene.layerTwo.AppendChild(screen)
+        screen.SetFocus(true)
+        scene.layerTwo.visible = false
+        scene.startTransition = true
+
+    end if
+
+end sub
+
+
+function GetCurrentScreen() as Object
 
     ? "ScreenStackLogic - GetCurrentScreen"
+
+    scene = ReturnScene()
     
-    return m.screenStack.Peek()
+    return scene.screenStack.Peek()
     
-end sub
+end function

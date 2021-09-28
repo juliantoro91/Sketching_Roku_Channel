@@ -1,8 +1,8 @@
-sub NewScreen(params as Object)
+function NewScreen(params as Object) as Object
 
     ? "MasterScreenLogic - NewScreen"
 
-    if not type(params) = "roAssociativeArray" then return
+    if params = invalid or not type(params) = "roAssociativeArray" then return invalid
         
     screen = CreateObject("roSGNode", params.name)
 
@@ -10,9 +10,8 @@ sub NewScreen(params as Object)
 
     contentTask = CreateObject("roSGNode", "MainLoaderTask")
     contentTask.url = screen.url
-    contentTask.control = "run"
+    
     m.screen = screen
-    contentTask.ObserveField("content", "OnMasterScreenContentChange")
 
     HDScreenWidth = 1280
     HDScreenHeight = 720
@@ -23,23 +22,27 @@ sub NewScreen(params as Object)
     screen.heightFactor = heightFactor
     screen.masterFrameDeviation = [params.Xdeviation, params.Ydeviation]
     screen.visible = false
-    
-    screen.runSetup = true
+
+    contentTask.control = "run"
+    contentTask.ObserveField("content", "OnMasterScreenContentChange")
 
     screen.ObserveField("loadCompleted", "OnLoadedScreen")
 
-end sub
+    return screen
+
+end function
 
 
 sub OnMasterScreenContentChange(event as Object)
 
     ? "MasterScreenLogic - OnMasterScreenContentChange"
-
+    
     content = event.GetData()
 
     if content <> invalid
 
        m.screen.content = content
+       
        m.screen = invalid
        
     end if
@@ -47,9 +50,11 @@ sub OnMasterScreenContentChange(event as Object)
 end sub
 
 
-sub OnLoadedScreen()
+sub OnLoadedScreen(event as Object)
 
     ? "MasterScreenLogic - OnLoadedScreen"
+
+    screen = event.GetRoSGNode()
 
     AddScreen(screen)
 
@@ -59,7 +64,7 @@ end sub
 ' This function calculates the specific factor to be used in the screen setup
 function calculateFactor(factor as Object, default as Object, screen as Object) as Object
 
-    ? "MasterScreenLogin - calculateFactor"
+    ? "MasterScreenLogic - calculateFactor"
 
     result = 0
 

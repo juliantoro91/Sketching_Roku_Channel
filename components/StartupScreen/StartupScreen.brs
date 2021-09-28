@@ -19,7 +19,16 @@ sub SpecificScreenSetup()
     ? "StartupScreen - SpecificScreenSetup"
 
     m.startupLogo.uri = m.top.content.GetChild(0).url
-    'm.startupVideo
+    m.startupLogo.width = m.top.width
+    m.startupLogo.height = m.top.height
+    m.startupLogo.loadWidth = m.top.width
+    m.startupLogo.loadHeight = m.top.height
+    m.startupLogo.loadDisplayMode = "scaleToFit"
+
+    m.startupVideo.content = m.top.content.GetChild(1).content
+    m.startupVideo.width = m.top.width
+    m.startupVideo.height = m.top.height
+    m.startupVideo.bufferingBarVisibilityAuto = false
 
 end sub
 
@@ -27,6 +36,6 @@ sub OnVisibleChange()
 
     ? "StartupScreen - OnVisibleChange"
 
-    if not m.top.visible then m.top.removeChild(m.startupVideo)
+    'if not m.top.visible then m.startupVideo.control = "stop"
 
 end sub

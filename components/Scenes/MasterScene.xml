@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="MasterScene" extends="MasterDisplay">
+<component name="MasterScene" extends="Group">
 	<!-- Handlers -->
     <script type="text/brightscript" uri="pkg:/components/Scenes/MasterScene.brs" />
+	<script type="text/brightscript" uri="pkg:/source/utils.brs" />
     
     <interface>
+		<field id="width" type="Integer" />
+		<field id="height" type="Integer" />
     	<field id="screenStack" type="array" />
         <field id="layerOne" type="node" />
         <field id="layerTwo" type="node" />
@@ -17,9 +20,11 @@
     		id="sceneLayers">
 	    	<Rectangle
 	    		id="sceneLayerOne"
+				color="0xffffff00"
 	    		visible="true" />
 	    	<Rectangle
 	    		id="sceneLayerTwo"
+				color="0xffffff00"
 	    		visible="true" />
 	    </Group>
 

@@ -13,13 +13,13 @@ sub ProcessContent()
 
     json = GetContent()
 
-    rootChildren = []
+    'rootChildren = []
     
     content = CreateObject("RoSGNode","ContentNode")
     
     if json <> invalid then content = ParseContent(json)
     
-    m.top.content = content.GetChild(0) ' Revisar type Mismatch en este punto roAA a ContentNode
+    m.top.content = content.GetChild(0)
 
 end sub
 

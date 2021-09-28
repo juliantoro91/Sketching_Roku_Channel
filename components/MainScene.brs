@@ -6,11 +6,11 @@ sub init()
     m.top.backgroundColor = "0xEEEEEEFF"
     m.top.backgroundUri = ""
 
-    m.screenVariables = LoadScreenVariables()
+    m.top.screenVariables = LoadScreenVariables()
 
     InitScenes()
 
-    scene = RetunScene(m.top.sceneID)
+    'scene = ReturnScene(m.top.sceneID)
 
     screen = NewStartupScreen()
 
