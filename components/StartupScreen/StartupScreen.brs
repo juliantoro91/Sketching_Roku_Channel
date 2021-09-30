@@ -24,12 +24,15 @@ sub SpecificScreenSetup()
     m.startupLogo.loadWidth = m.top.width
     m.startupLogo.loadHeight = m.top.height
     m.startupLogo.loadDisplayMode = "scaleToFit"
+    m.startupLogo.visible = true
 
-    m.startupVideo.content = m.top.content.GetChild(1).content
+    m.startupVideo.content = m.top.content.GetChild(1)
     m.startupVideo.width = m.top.width
     m.startupVideo.height = m.top.height
     m.startupVideo.bufferingBarVisibilityAuto = false
-
+    m.startupVideo.visible = false
+    m.startupVideo.control = "play"
+    
 end sub
 
 sub OnVisibleChange()

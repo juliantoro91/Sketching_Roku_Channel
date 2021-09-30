@@ -4,9 +4,9 @@ sub NewStartupScreen()
 
     params = m.top.screenVariables.startupScreen
 
-    screen = NewScreen(params)
+    m.screen = NewScreen(params)
 
-    screen.ObserveField("videoState","OnVideoStateChange")
+    m.screen.ObserveField("videoState","OnVideoStateChange")
 
 end sub
 
@@ -18,12 +18,12 @@ sub OnVideoStateChange(event as Object)
     node = event.getRoSGNode()
 
     data = event.GetData()
-
+    
     if not data = "playing"
 
         node.video.visible = false
 
-        if data = "finished" or "error"
+        if data = "finished" or data = "error"
 
             node.video.control = "play"
 

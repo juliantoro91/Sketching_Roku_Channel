@@ -12,16 +12,16 @@
 
         <Rectangle id="temporalBackground">
 
-            <Video
-                id="startupVideo" />
+            <Poster
+                id="startupLogo" />
 
         </Rectangle>
         
         
         <Rectangle id="temporalFrame">
 
-            <Poster
-                id="startupLogo" />
+            <Video
+                id="startupVideo" />
             
         </Rectangle>
 

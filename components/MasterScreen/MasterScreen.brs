@@ -70,6 +70,8 @@ function AutoLayout (node as Object, isVertical as Boolean) as Boolean
     
     ' Get parent and verify its existence
     parent = node.GetParent()
+    parent.width = m.top.width
+    parent.height = m.top.height
     if parent = invalid then return false
     
     ' Verify the Layout Structure
@@ -81,7 +83,7 @@ function AutoLayout (node as Object, isVertical as Boolean) as Boolean
     parentHeight = parent.height
     
     for each child in node.GetChildren(-1, 0)
-    
+        
         if child.width <> invalid
             if child.avoidDimensionalChange = invalid
                 if isVertical
@@ -109,7 +111,7 @@ function AutoLayout (node as Object, isVertical as Boolean) as Boolean
         
     ' Calculate itemSpacings
     childrenQty = node.GetChildCount()
-    STOP
+    
     if isVertical
         grossDimension = node.boundingRect().height
         itemSpacing = SetItemSpacings(parentHeight, grossDimension, childrenQty)
