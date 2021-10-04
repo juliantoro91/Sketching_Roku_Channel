@@ -12,8 +12,8 @@ sub init()
     m.frames = frames
     m.poster = poster
   
-    'm.animator.duration = fps
-    m.animator.duration = 0.25
+    m.animator.duration = fps
+    'm.animator.duration = 0.25
     m.animator.control = "start"
   end function
   
@@ -30,9 +30,18 @@ sub init()
   
   sub displayNextFrame()
     m.frameIndex++
-    if m.frameIndex >= m.frames.count()
+    if m.frameIndex >= 61
       m.frameIndex = 0
     end if
-    ? "f: ";m.frames[m.frameIndex]
-    m.poster.uri = m.frames[m.frameIndex]
+    index = m.frameIndex + 1
+    uri = StrI(index)
+    uri = Right(uri, Len(uri)-1)
+    if index < 10
+      uri = "00"+uri
+    else
+      uri = "0"+uri
+    end if
+    uri = "pkg:/images/test/ezgif-frame-"+uri+".png"
+    m.poster.uri = uri
+    ? "f: ";uri
   end sub

@@ -31,7 +31,7 @@ sub SpecificScreenSetup()
     m.startupLogo.loadWidth = m.top.width
     m.startupLogo.loadHeight = m.top.height
     m.startupLogo.loadDisplayMode = "scaleToFit"
-    m.startupLogo.visible = false
+    m.startupLogo.visible = true
 
     m.startupAnimation.uri = "pkg:/images/StartupVideo_GIF.gif"
     m.startupAnimation.width = m.top.width
