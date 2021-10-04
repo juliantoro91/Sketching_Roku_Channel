@@ -6,7 +6,7 @@ sub NewStartupScreen()
 
     m.screen = NewScreen(params)
 
-    m.screen.ObserveField("videoState","OnVideoStateChange")
+    'm.screen.ObserveField("videoState","OnVideoStateChange")
 
 end sub
 
