@@ -2,20 +2,23 @@ sub init()
     
     ? "MainScene - Init"
     
-    ' Background Setup
+    ' Set background
     m.top.backgroundColor = "0xEEEEEEFF"
-    m.top.backgroundUri = ""
+    m.top.backgroundUri = "pkg:/images/FadeBackground.png"
 
+    ' Set scene size: SetScreenDimensions()
+    SetScreenDimensions(m.top, 1, 1)
+
+    ' LoadScreenVariables()
     m.top.screenVariables = LoadScreenVariables()
 
+    ' InitScenes()
     InitScenes()
 
-    'scene = ReturnScene(m.top.sceneID)
-
+    ' NewStartupScreen()
     screen = NewStartupScreen()
 
-    'AddScreenToScene(screen, scene)
-
+    ' Set changeScene observer
     m.top.ObserveField("changeScene", "OnChangeActualScene")
     
 End sub
@@ -25,12 +28,14 @@ function LoadScreenVariables() as Object
 
     ? "MainScene - LoadScreenVariables"
 
+    ' Set route
     route = m.top.screenVariablesRoute ' The route of the file with the screen variables
 
+    ' ReadAsciiFile(route) and ParseJSON
     loaderTask = ReadAsciiFile(route)
-
     screenVariables = ParseJSON(loaderTask) ' To storage the screen variables
     
+    'Return AssocArray
     return screenVariables.screenVariables
     
 end function

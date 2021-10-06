@@ -11,7 +11,8 @@
     	<field id="screenStack" type="array" />
         <field id="layerOne" type="node" />
         <field id="layerTwo" type="node" />
-        <field id="startTransition" type="integer" />
+        <field id="startTransition" type="boolean" />
+		<field id="avoidBackButton" type="boolean" />
     </interface>
     
     <children>

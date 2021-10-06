@@ -2,21 +2,19 @@ sub Init()
 
     ? "StartupScreen - Init"
 
+    ' Initialize startupLogo/Animation
     m.startupLogo = m.top.FindNode("startupLogo")
     m.startupAnimation = m.top.FindNode("startupAnimation")
 
-
-    ' TEST
-    m.decoder = createObject("roSGNode", "GIFDecoder")
-    m.decoder.delegate = m.top
+    ' animator = CreateObject(“FrameAnimator”)
     m.animator = createObject("roSGNode", "FrameAnimator")
-    
 
-    'm.top.video = m.startupVideo
-
+    ' Set content observer
     m.top.ObserveField("content", "ScreenSetup")
-
+    ' Set visible observer
     m.top.ObserveField("visible", "OnVisibleChange")
+    ' Set animator.loaded observer
+    m.animator.ObserveField("loaded", "OnLoadedAnimation")
 
 end sub
 
@@ -25,27 +23,42 @@ sub SpecificScreenSetup()
 
     ? "StartupScreen - SpecificScreenSetup"
 
-    m.startupLogo.uri = m.top.content.GetChild(0).url
+    content = m.top.content
+
+    ' Set startupLogo uri and size
+    content = GetChildByID(m.top.content, m.startupLogo.id)
+    m.startupLogo.uri = content.url
     m.startupLogo.width = m.top.width
     m.startupLogo.height = m.top.height
     m.startupLogo.loadWidth = m.top.width
     m.startupLogo.loadHeight = m.top.height
     m.startupLogo.loadDisplayMode = "scaleToFit"
     m.startupLogo.visible = true
-
-    m.startupAnimation.uri = "pkg:/images/StartupVideo_GIF.gif"
+    
+    ' Set startupAnimation size
+    content = GetChildByID(m.top.content, m.startupAnimation.id)
     m.startupAnimation.width = m.top.width
     m.startupAnimation.height = m.top.height
     m.startupAnimation.loadWidth = m.top.width
     m.startupAnimation.loadHeight = m.top.height
     m.startupAnimation.loadDisplayMode = "scaleToFit"
-    m.startupAnimation.visible = true
 
+    ' LoadFrames()
+    m.frames = []
+    m.fps = 0
+    route = content.route
+    name = content.name
+    file = content.file
+    totalFrames = val(content.totalFrames)
+    duration = val(content.duration)
 
-    ' Start decoder
-    m.decoder.callFunc("decodeGIF", "pkg:/images/GIF.gif")
-    ' Created usign web tool: https://ezgif.com/video-to-gif/
-    ' Method: Preserve transparency (transparent video to transparent GIF)
+    LoadFrames(route, name, file, totalFrames, duration)
+
+    ' startupAnimation NOT visible
+    m.startupAnimation.visible = false
+
+    ' Start animator
+    m.animator.callFunc("start", m.frames, m.fps, m.startupAnimation)
     
 end sub
 
@@ -53,10 +66,23 @@ sub OnVisibleChange()
 
     ? "StartupScreen - OnVisibleChange"
 
-    'if not m.top.visible then m.startupVideo.control = "stop"
+    ' if visible = false: Finish startupAnimation
+    if not m.top.visible then m.animator.callFunc("finish")
 
 end sub
 
-sub gifDecoderDidFinish(frames as Object, fps as Float)
-    m.animator.callFunc("start", frames, fps, m.startupAnimation)
+sub OnLoadedAnimation()
+
+    ? "StartupScreen - OnLoadedAnimation"
+
+    ' Set startupLogo NOT visible
+    m.startupLogo.visible = false
+
+
+    ' Set startupAnimation visible
+    m.startupAnimation.visible = true
+
+    ' Set animationStarted to TRUE
+    m.top.animationLoaded = true
+    
 end sub

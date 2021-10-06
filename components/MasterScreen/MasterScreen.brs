@@ -4,59 +4,56 @@ sub ScreenSetup()
 
     ? "MasterScreen - SetupScreen"
 
+    ' Initialize master,back and temporal frames
+    masterFrame = m.top.FindNode("masterFrame")
+    masterFrameLG = m.top.FindNode("masterFrameLG")
+    temporalMasterFrame = m.top.FindNode("temporalFrame")
+
+    backFrame = m.top.FindNode("backgroundFrame")
+    temporalBackFrame = m.top.FindNode("temporalBackground")
+
+    ' SetScreenDimensions()
     SetScreenDimensions(m.top, m.top.widthFactor, m.top.heightFactor)
 
-    m.masterFrame = m.top.FindNode("masterFrame")
-    m.masterFrameLG = m.top.FindNode("masterFrameLG")
-    m.temporalFrame = m.top.FindNode("temporalFrame")
+    ' Set masterFrame Size: usign alias in interface fields
 
-    m.backgroundFrame = m.top.FindNode("backgroundFrame")
-    m.backgroundFrameLG = m.top.FindNode("backgroundFrameLG")
-    m.temporalBackground = m.top.FindNode("temporalBackground")
+    ' Set backFrame Size
+    if m.top.fullSizedBackground
+        SetScreenDimensions(backFrame, 1, 1)
+    else
+        backFrame.width = m.top.width
+        backFrame.height = m.top.height
+    end if
 
-    ReparentChildren()
+    ' Reparent temporalFrame's children
+    ReparentChildren(temporalMasterFrame, masterFrameLG)
+    ReparentChildren(temporalBackFrame, backFrame)
 
+    ' Call Function "Specific Screen Setup"
     m.top.callFunc("SpecificScreenSetup")
 
-    ' IN MASTER FRAME
-    isVertical = false
-    if m.masterFrameLG.layoutDirection = "vert" then isVertical = true
+    ' AutoLayout() masterFrame
+    if AutoLayout(masterFrameLG) then ? ">>> AutoLayout Success"
+    
+    ' AligFrame() master and back
+    AlignFrame(masterFrame, m.top.masterDeviation)
+    if not m.top.fullSizedBackground then AlignFrame(backFrame, m.top.masterDeviation)
 
-    if AutoLayout(m.masterFrameLG, isVertical) then ? ">>> AutoLayout Success"
-    CenteringLayout(m.masterFrameLG)
-
-    CenterMasterFrame(m.masterFrame, m.top.masterFrameDeviation)
-
-    ' IN BACKGROUND FRAME
-    isVertical = false
-    if m.backgroundFrameLG.layoutDirection = "vert" then isVertical = true
-
-    if AutoLayout(m.backgroundFrameLG, isVertical) then ? ">>> AutoLayout Success"
-    CenteringLayout(m.backgroundFrameLG)
-
-    CenterMasterFrame(m.backgroundFrame, m.top.masterFrameDeviation)
-
+    ' Set loadComplete to true
     m.top.loadCompleted = true
 
 end sub
 
 
-sub ReparentChildren()
+sub ReparentChildren(temporal, frame)
 
     ? "MasterScreen - ReparentChildren"
 
-    if m.temporalBackground.GetChildCount() <> 0
-        for each child in m.temporalBackground.GetChildren(-1, 0)
+    ' for each child in temportal: > Reparent to frame
+    if temporal.GetChildCount() <> 0
+        for each child in temporal.GetChildren(-1, 0)
 
-            child.Reparent(m.backgroundFrameLG, false)
-
-        end for
-    end if
-
-    if m.temporalFrame.GetChildCount() <> 0
-        for each child in m.temporalFrame.GetChildren(-1, 0)
-
-            child.Reparent(m.masterFrameLG, false)
+            child.Reparent(frame, false)
 
         end for
     end if
@@ -64,90 +61,89 @@ sub ReparentChildren()
 end sub
 
 
-function AutoLayout (node as Object, isVertical as Boolean) as Boolean
+function AutoLayout (node as Object) as Boolean
 
     ? "MasterScreeen - AutoLayout()"
     
-    ' Get parent and verify its existence
+    ' Get parent
     parent = node.GetParent()
+    if parent = invalid then return false
+
+    ' Verify AutoLayout() Structure (parent as “Rectangle” and “Child” as “LayoutGroup”)
+    if parent.threadInfo().node.type = "Rectangle" and parent.GetChildCount() = 1 and node.threadInfo().node.type = "LayoutGroup"  
+        isVertical = false
+        if node.layoutDirection = "vert" then isVertical = true
+    else
+        return false
+    end if
+
+    ' Set parent width and height
     parent.width = m.top.width
     parent.height = m.top.height
-    if parent = invalid then return false
     
-    ' Verify the Layout Structure
-    if parent.threadInfo().node.type <> "Rectangle" then return false
-    if node.threadInfo().node.type <> "LayoutGroup" then return false
-    
-    ' Get parent dimensions
-    parentWidth = parent.width
-    parentHeight = parent.height
-    
+    ' Set children width or height
     for each child in node.GetChildren(-1, 0)
         
         if child.width <> invalid
             if child.avoidDimensionalChange = invalid
                 if isVertical
-                    child.width = parentWidth
+                    child.width = parent.width
                 else
-                    child.height = parentheight
+                    child.height = parent.height
                 end if
             end if
         end if
-        
-        ' Verifying child recurrence in function
-        if child.threadInfo().node.type = "Rectangle" and child.GetChildCount() = 1 and child.GetChild(0).threadInfo().node.type = "LayoutGroup"
-            
-            childIsVertical = false
-            if child.GetChild(0).layoutDirection = "vert" then childIsVertical = true
-            
-            if AutoLayout(child.GetChild(0), childIsVertical) then ? "AutoLayout Success"
-            CenteringLayout(child.GetChild(0))
-            
-        end if
+
+        ' Child AutoLayout()
+        if AutoLayout(child) then ? ">>> AutoLayout Success"
         
     end for
     
     grossDimension = 0 ' Variable to store the gross dimension of all components
         
-    ' Calculate itemSpacings
+    ' SetItemSpacings()
     childrenQty = node.GetChildCount()
     
     if isVertical
         grossDimension = node.boundingRect().height
-        itemSpacing = SetItemSpacings(parentHeight, grossDimension, childrenQty)
+        itemSpacing = SetItemSpacings(parent.height, grossDimension, childrenQty)
     else
         grossDimension = node.boundingRect().width
-        itemSpacing = SetItemSpacings(parentWidth, grossDimension, childrenQty)
+        itemSpacing = SetItemSpacings(parent.width, grossDimension, childrenQty)
     end if
     
     ? ">>> itemSpacings: ";node.id;" | ";itemSpacing
-    
-    ' Set itemSpacings
+
     node.itemSpacings = itemSpacing
+
+    ' AlignLayout()
+    AlignLayout(node)
     
     return true
       
 end function
 
 
-function SetItemSpacings (parentDimension as Float, grossDimension as Float, childrenQty as Integer) as Float
+function SetItemSpacings(parentDimension as Float, grossDimension as Float, childrenQty as Integer) as Float
 
     ? "MasterScreeen - SetItemSpacings"
 
+    ' Calculate Item Spacing
     if childrenQty > 1
         itemSpacing = (parentDimension - grossDimension) / (childrenQty - 1)
     else
         itemSpacing = 0
     end if
     
+    ' Return spacing
     return itemSpacing
     
 end function
 
 
-sub CenterMasterFrame(masterFrame as Object, deviation as Object) ' CHANGE NAME
+sub AlignFrame(frame as Object, deviation as Object)
     
-    ? "MasterScreeen - CenterMasterFrameRect()"
+    ? "MasterScreeen - AlignFrame()"
     deviationX = deviation[0]
     deviationY = deviation[1]
 
@@ -155,12 +151,36 @@ sub CenterMasterFrame(masterFrame as Object, deviation as Object) ' CHANGE NAME
     screenWidth = screenDimensions.w
     screenHeight = screenDimensions.h
     
+    ' Use deviation and screen size to center frame
     centerX = CreateObject("roFloat")
     centerX.SetFloat(deviationX + (screenWidth - m.top.width) / 2)
     
     centerY = CreateObject("roFloat")
     centerY.SetFloat(deviationY + (screenHeight - m.top.height) / 2)
     
-    masterFrame.translation = [centerX, centerY]
+    frame.translation = [centerX, centerY]
     
+end sub
+
+
+sub LoadFrames(route as String, name as String, file as String, totalFrames as Float, duration as Float)
+    
+    ? "MasterScreen - LoadFrames"
+    
+    frames = m.frames
+
+    ' Set base route Set base name
+    uri = route + name
+
+    'Populate frames Array
+    for i = 1 to totalFrames step 1
+
+        index = Str(i)
+        frames.Push(uri + Right(index, Len(index)-1) + file)
+
+    end for
+    
+    ' Calculate and set fps
+    m.fps = duration/totalFrames
+
 end sub

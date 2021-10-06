@@ -8,10 +8,11 @@
             "url":"https://sketching-channel.web.app/StartupScreenContent.json",
             "widthDefault":"540",
             "widthFactor":"0",
-            "heightDefault":"540",
+            "heightDefault":"225",
             "heightFactor":"0",
             "Xdeviation":"0",
-            "Ydeviation":"0"
+            "Ydeviation":"0",
+            "fullSizedBackground":"false"
         },
         "UserScreen":{
             "name":"UserScreen",

@@ -2,6 +2,7 @@ sub AddScreen(screen as Object)
 
     ? "ScreenStackLogic - AddScreen"
     
+    ' ChangeScreen(screen, “Add”)
     if screen <> invalid
 
         ChangeScreen(screen, "Add")
@@ -15,6 +16,7 @@ sub RemoveScreen (screen as Object)
 
     ? "ScreenStackLogic - CloseScreen"
     
+    ' ChangeScreen(screen, “Remove”)
     if screen = invalid OR screen.isSameNode(GetCurrentScreen())
         
         ChangeScreen(screen, "Remove")
@@ -28,18 +30,22 @@ sub ChangeScreen(screen as Object, action as String)
 
     ? "ScreenStackLogic - ChangeScreen"
 
+    ' scene = ReturnScene()
     scene = ReturnScene()
 
+    ' If “Add”: prevScreen = GetCurrentScreen()
     if action = "Add"
 
         prevScreen = GetCurrentScreen()
 
+    'if “Remove”: prevScreen = screenStack.Pop
     else if action = "Remove"
 
         prevScreen = scene.screenStack.Pop()
 
     end if
 
+    ' Remove Child in scene.layerOne / Move prevScreen to scene.layerOne / scene.layerOne visible
     if prevScreen <> invalid
 
         actualChild.layerOne.GetChild(0)
@@ -49,21 +55,25 @@ sub ChangeScreen(screen as Object, action as String)
 
     end if
 
+    ' If “Add”: scene.screenStack.push(screen)
     if action = "Add"
 
         scene.screenStack.Push(screen)
 
+    ' if “Remove”: screen = GetCurrentScreen()
     else if action = "Remove"
 
         screen = GetCurrentScreen()
 
     end if
 
+    ' Add screen to scene.layerTwo / Set Focus to ScreeN / scene.layerTwo NOT visible
     if screen <> invalid
 
         scene.layerTwo.AppendChild(screen)
         screen.SetFocus(true)
         scene.layerTwo.visible = false
+        ' scene.startTransition set to true
         scene.startTransition = true
 
     end if
@@ -75,8 +85,10 @@ function GetCurrentScreen() as Object
 
     ? "ScreenStackLogic - GetCurrentScreen"
 
+    ' scene = ReturnScene()
     scene = ReturnScene()
     
+    ' return scene.screenStack.Peek()
     return scene.screenStack.Peek()
     
 end function

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="FrameAnimator" extends="Node">
   <interface>
+    <field id="loaded" type="boolean" />
     <function name="start"/>
     <function name="finish"/>
   </interface>

@@ -2,37 +2,21 @@ sub NewStartupScreen()
 
     ? "StartupScreenLogic - NewStartupScreen"
 
+    ' Load StartupScreen params
     params = m.top.screenVariables.startupScreen
 
+    ' screen = NewScreen(params)
     m.screen = NewScreen(params)
 
-    'm.screen.ObserveField("videoState","OnVideoStateChange")
+    ' Set animationStarted observer
+    m.screen.ObserveField("animationLoaded","OnAnimationLoaded")
 
 end sub
 
 
-sub OnVideoStateChange(event as Object)
+sub OnAnimationLoaded(event as Object)
 
-    ? "StartupScreenLogic - OnVideoStateChange"
-
-    node = event.getRoSGNode()
-
-    data = event.GetData()
+    ? "StartupScreenLogic - OnAnimationLoaded"
     
-    if not data = "playing"
-
-        node.video.visible = false
-
-        if data = "finished" or data = "error"
-
-            node.video.control = "play"
-
-        end if
-
-    else
-
-        node.video.visible = true
-
-    end if
-
+    
 end sub

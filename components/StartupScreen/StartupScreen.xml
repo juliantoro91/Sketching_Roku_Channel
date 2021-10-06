@@ -4,11 +4,7 @@
     <script type="text/brightscript" uri="pkg:/components/StartupScreen/StartupScreen.brs" />
 
     <interface>
-        <!--field id="videoState" type="string" alias="startupVideo.state" />
-        <field id="video" type="node" /-->
-        <!-- TEST -->
-        <!-- GIFDecoder callback -->
-        <function name="gifDecoderDidFinish"/>
+        <field id="animationLoaded" type="Boolean" />
     </interface>
 
     <children>
@@ -19,7 +15,6 @@
                 id="startupLogo" />
 
         </Rectangle>
-        
         
         <Rectangle id="temporalFrame">
 
